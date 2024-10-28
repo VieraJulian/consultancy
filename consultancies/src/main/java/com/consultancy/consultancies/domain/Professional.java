@@ -31,7 +31,7 @@ public class Professional {
     @Column(nullable = false)
     private boolean enabled;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER)
     @JoinColumn(name = "professionalId")
     private List<Availability> availabilities;
 

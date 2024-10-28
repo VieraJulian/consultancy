@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface IProfessionalRepository extends JpaRepository<Professional, Long> {
 
-    @Query(value = "SELECT p FROM Professional")
-    List<Professional> getAllProfessionals(Pageable pageable);
+    @Query(value = "SELECT p FROM Professional p")
+    List<Professional> findAllProfessionals(Pageable pageable);
 }

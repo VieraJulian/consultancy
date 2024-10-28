@@ -1,13 +1,18 @@
 package com.consultancy.consultancies.application.dto;
 
-import jakarta.persistence.Column;
+import lombok.*;
 
 import java.time.LocalTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class AvailabilityDto {
 
     private Long id;
     private String dayOfWeek;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String startTime;
+    private String endTime;
 }
