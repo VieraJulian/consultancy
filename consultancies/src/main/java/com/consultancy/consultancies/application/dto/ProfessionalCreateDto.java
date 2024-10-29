@@ -1,22 +1,23 @@
 package com.consultancy.consultancies.application.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProfessionalDto {
+@AllArgsConstructor
+public class ProfessionalCreateDto {
 
-    private Long id;
     private String name;
     private String specialty;
     private BigDecimal price;
     private String description;
-    private boolean enabled;
-    private List<AvailabilityDto> availabilities;
+    private List<AvailabilityCreateDto> availabilities;
 
 }

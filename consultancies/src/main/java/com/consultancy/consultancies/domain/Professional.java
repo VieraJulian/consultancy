@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "professionals")
 @SQLDelete(sql = "UPDATE professionals SET enabled = false WHERE id = ?")
 public class Professional {

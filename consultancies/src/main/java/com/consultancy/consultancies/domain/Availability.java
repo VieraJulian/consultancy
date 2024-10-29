@@ -10,7 +10,6 @@ import java.time.LocalTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "availabilities")
 public class Availability {
 

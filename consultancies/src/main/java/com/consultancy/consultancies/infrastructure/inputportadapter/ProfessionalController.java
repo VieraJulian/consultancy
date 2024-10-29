@@ -1,7 +1,9 @@
 package com.consultancy.consultancies.infrastructure.inputportadapter;
 
 import com.consultancy.consultancies.application.ProfessionalUseCase;
+import com.consultancy.consultancies.application.dto.ProfessionalCreateDto;
 import com.consultancy.consultancies.application.dto.ProfessionalDto;
+import com.consultancy.consultancies.application.dto.ProfessionalUpdateDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,9 @@ public class ProfessionalController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ProfessionalDto> createProfessional(@RequestBody ProfessionalDto professionalDto){
+    public ResponseEntity<ProfessionalDto> createProfessional(@RequestBody ProfessionalCreateDto professionalCreateDto){
         try {
-            ProfessionalDto professionalCreated = professionalUseCase.createProfessional(professionalDto);
+            ProfessionalDto professionalCreated = professionalUseCase.createProfessional(professionalCreateDto);
             return new ResponseEntity<>(professionalCreated, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Error creating professional {}", String.valueOf(e));
@@ -34,9 +36,9 @@ public class ProfessionalController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProfessionalDto> updateProfessional(@PathVariable Long id, @RequestBody ProfessionalDto professionalDto){
+    public ResponseEntity<ProfessionalDto> updateProfessional(@PathVariable Long id, @RequestBody ProfessionalUpdateDto professionalUpdateDto){
         try {
-            ProfessionalDto professionalUpdated = professionalUseCase.updateProfessional(id, professionalDto);
+            ProfessionalDto professionalUpdated = professionalUseCase.updateProfessional(id, professionalUpdateDto);
             return new ResponseEntity<>(professionalUpdated, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Error editing professional {}", String.valueOf(e));
