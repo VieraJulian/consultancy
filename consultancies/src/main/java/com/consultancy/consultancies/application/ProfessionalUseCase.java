@@ -20,17 +20,11 @@ public class ProfessionalUseCase implements IProfessionalInputPort {
 
     private final IProfessionalMethods professionalMethods;
 
-    private final IAvailabilityMethods availabilityMethods;
-
     private final IProfessionalMapper professionalMapper;
 
-    private final IAvailabilityMapper availabilityMapper;
-
-    public ProfessionalUseCase(IProfessionalMethods professionalMethods, IAvailabilityMethods availabilityMethods, IProfessionalMapper professionalMapper, IAvailabilityMapper availabilityMapper) {
+    public ProfessionalUseCase(IProfessionalMethods professionalMethods, IProfessionalMapper professionalMapper) {
         this.professionalMethods = professionalMethods;
-        this.availabilityMethods = availabilityMethods;
         this.professionalMapper = professionalMapper;
-        this.availabilityMapper = availabilityMapper;
     }
 
     @Override
@@ -45,7 +39,16 @@ public class ProfessionalUseCase implements IProfessionalInputPort {
 
     @Override
     public ProfessionalDto updateProfessional(Long id, ProfessionalUpdateDto professionalUpdateDto) throws ProfessionalNotFoundException {
-        return null;
+        Professional professionalDB = professionalMethods.getProfessionalById(id);
+
+        professionalDB.setName(professionalUpdateDto.getName());
+        professionalDB.setSpecialty(professionalUpdateDto.getSpecialty());
+        professionalDB.setPrice(professionalUpdateDto.getPrice());
+        professionalDB.setDescription(professionalUpdateDto.getDescription());
+
+        Professional professionalUpdated = professionalMethods.saveProfessional(professionalDB);
+
+        return professionalMapper.professionalToProfessionalDto(professionalUpdated);
     }
 
     @Override
