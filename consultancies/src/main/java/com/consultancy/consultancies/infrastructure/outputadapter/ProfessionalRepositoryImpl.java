@@ -32,7 +32,7 @@ public class ProfessionalRepositoryImpl implements IProfessionalMethods {
 
     @Override
     public List<Professional> getAllProfessionals(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
         return professionalRepository.findAllProfessionals(pageable);
     }
 

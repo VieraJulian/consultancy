@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/professionals")
 public class ProfessionalController {
@@ -39,9 +41,20 @@ public class ProfessionalController {
     public ResponseEntity<ProfessionalDto> updateProfessional(@PathVariable Long id, @RequestBody ProfessionalUpdateDto professionalUpdateDto){
         try {
             ProfessionalDto professionalUpdated = professionalUseCase.updateProfessional(id, professionalUpdateDto);
-            return new ResponseEntity<>(professionalUpdated, HttpStatus.CREATED);
+            return new ResponseEntity<>(professionalUpdated, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error editing professional {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/all/{page}/{size}")
+    public ResponseEntity<List<ProfessionalDto>> findAllProfessionals(@PathVariable int page, @PathVariable int size){
+        try {
+            List<ProfessionalDto> professionals = professionalUseCase.findAllProfessionals(page, size);
+            return new ResponseEntity<>(professionals, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error getting professionals {}", String.valueOf(e));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

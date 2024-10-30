@@ -12,6 +12,7 @@ import com.consultancy.consultancies.infrastructure.outputport.IAvailabilityMeth
 import com.consultancy.consultancies.infrastructure.outputport.IProfessionalMethods;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,12 @@ public class ProfessionalUseCase implements IProfessionalInputPort {
 
     @Override
     public List<ProfessionalDto> findAllProfessionals(int page, int size) {
-        return List.of();
+        List<Professional> professionalList = professionalMethods.getAllProfessionals(page, size);
+
+        return professionalList.stream()
+                .map(professionalMapper::professionalToProfessionalDto)
+                .collect(Collectors.toList());
+
     }
 
     @Override
