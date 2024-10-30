@@ -15,5 +15,5 @@ public interface IProfessionalInputPort {
 
     List<ProfessionalDto> findAllProfessionals(int page, int size);
 
-    String deleteProfessionalById(Long id);
+    String deleteProfessionalById(Long id) throws ProfessionalNotFoundException;
 }

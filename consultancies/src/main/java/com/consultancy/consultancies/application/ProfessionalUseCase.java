@@ -4,15 +4,12 @@ import com.consultancy.consultancies.application.dto.ProfessionalCreateDto;
 import com.consultancy.consultancies.application.dto.ProfessionalDto;
 import com.consultancy.consultancies.application.dto.ProfessionalUpdateDto;
 import com.consultancy.consultancies.application.exception.ProfessionalNotFoundException;
-import com.consultancy.consultancies.application.mapper.IAvailabilityMapper;
 import com.consultancy.consultancies.application.mapper.IProfessionalMapper;
 import com.consultancy.consultancies.domain.Professional;
 import com.consultancy.consultancies.infrastructure.inputport.IProfessionalInputPort;
-import com.consultancy.consultancies.infrastructure.outputport.IAvailabilityMethods;
 import com.consultancy.consultancies.infrastructure.outputport.IProfessionalMethods;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +60,10 @@ public class ProfessionalUseCase implements IProfessionalInputPort {
     }
 
     @Override
-    public String deleteProfessionalById(Long id) {
-        return "";
+    public String deleteProfessionalById(Long id) throws ProfessionalNotFoundException {
+        professionalMethods.getProfessionalById(id);
+        professionalMethods.deleteProfessionalById(id);
+
+        return "Professional deleted successfully";
     }
 }

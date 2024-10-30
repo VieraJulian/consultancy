@@ -58,4 +58,15 @@ public class ProfessionalController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteProfessional(@PathVariable Long id){
+        try {
+            String msj = professionalUseCase.deleteProfessionalById(id);
+            return new ResponseEntity<>(msj, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error deleting professionals {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
