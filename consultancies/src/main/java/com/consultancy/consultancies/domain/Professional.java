@@ -30,8 +30,8 @@ public class Professional {
     @Column(nullable = false)
     private boolean enabled;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
-    @JoinColumn(name = "professionalId")
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "professionalId", referencedColumnName = "id")
     private List<Availability> availabilities;
 
 }
