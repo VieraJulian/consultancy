@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 
 @Entity
 @Getter
@@ -12,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET enabled = false WHERE id = ?")
 public class UserEntity {
 
     @Id
@@ -28,7 +30,7 @@ public class UserEntity {
     private boolean accountNotLocked;
     private boolean credentialNotExpired;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "role_id")
     private Role role;
 }
