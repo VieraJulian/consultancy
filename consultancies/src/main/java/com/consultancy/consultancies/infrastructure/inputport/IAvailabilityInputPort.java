@@ -12,5 +12,5 @@ public interface IAvailabilityInputPort {
 
     AvailabilityDto updateAvailability(Long id, AvailabilityDto availability) throws AvailabilityNotFoundException, ProfessionalNotFoundException;
 
-    String deleteAvailabilityById(Long id);
+    String deleteAvailabilityById(Long id) throws AvailabilityNotFoundException, ProfessionalNotFoundException;
 }

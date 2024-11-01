@@ -14,6 +14,8 @@ import com.consultancy.consultancies.infrastructure.outputport.IProfessionalMeth
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+
 @Service
 public class AvailabilityUseCase implements IAvailabilityInputPort {
 
@@ -39,23 +41,26 @@ public class AvailabilityUseCase implements IAvailabilityInputPort {
         Availability availabilityConverted = availabilityMapper.availabilityDtoToAvailability(availability);
 
         professionalDB.getAvailabilities().add(availabilityConverted);
-        
+
         return professionalMapper.professionalToProfessionalDto(professionalMethods.saveProfessional(professionalDB));
     }
 
     @Override
     public AvailabilityDto updateAvailability(Long id, AvailabilityDto availability) throws AvailabilityNotFoundException, ProfessionalNotFoundException {
-//        Availability availabilityDB = availabilityMethods.getAvailabilityById(id);
-//
-//        availabilityDB.setDayOfWeek(availability.getDayOfWeek());
-//        availabilityDB.setStartTime(availability.getStartTime());
-//        availabilityDB.setEndTime(availability.getEndTime());
+        Availability availabilityDB = availabilityMethods.getAvailabilityById(id);
 
-        return null;
+        availabilityDB.setDayOfWeek(availability.getDayOfWeek());
+        availabilityDB.setStartTime(LocalTime.parse(availability.getStartTime()));
+        availabilityDB.setEndTime(LocalTime.parse(availability.getEndTime()));
+
+        return availabilityMapper.availabilityToAvailabilityDto(availabilityMethods.saveAvailability(availabilityDB));
     }
 
     @Override
-    public String deleteAvailabilityById(Long id) {
-        return "";
+    public String deleteAvailabilityById(Long id) throws AvailabilityNotFoundException, ProfessionalNotFoundException {
+        availabilityMethods.getAvailabilityById(id);
+        availabilityMethods.deleteAvailabilityById(id);
+
+        return "Availability deleted successfully";
     }
 }

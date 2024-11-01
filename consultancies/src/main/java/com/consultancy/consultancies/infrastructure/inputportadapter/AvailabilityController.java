@@ -33,4 +33,26 @@ public class AvailabilityController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<AvailabilityDto> updateAvailability(@PathVariable Long id, @RequestBody AvailabilityDto availabilityDto) {
+        try {
+            AvailabilityDto availabilityUpdated = availabilityInputPort.updateAvailability(id, availabilityDto);
+            return new ResponseEntity<>(availabilityUpdated, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error updating availability {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteAvailabilityById(@PathVariable Long id) {
+        try {
+            String msj = availabilityInputPort.deleteAvailabilityById(id);
+            return new ResponseEntity<>(msj, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error deleting availability {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
