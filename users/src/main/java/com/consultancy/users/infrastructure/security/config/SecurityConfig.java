@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/permissions/**").permitAll();
                     authorize.requestMatchers("/roles/**").permitAll();
+                    authorize.requestMatchers("/users/**").permitAll();
                 });
         return http.build();
     }
