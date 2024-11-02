@@ -12,9 +12,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO {
+public class RoleRequestDTO {
 
-    private Long id;
     private String role;
     Set<Permission> permissions;
 }
