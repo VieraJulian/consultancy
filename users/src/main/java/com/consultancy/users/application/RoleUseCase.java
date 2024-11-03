@@ -10,6 +10,7 @@ import com.consultancy.users.domain.Role;
 import com.consultancy.users.infrastructure.inputPort.IRoleInputPort;
 import com.consultancy.users.infrastructure.outputPort.IPermissionMethods;
 import com.consultancy.users.infrastructure.outputPort.IRoleMethods;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -27,6 +28,7 @@ public class RoleUseCase implements IRoleInputPort {
 
     private final IPermissionMethods permissionMethods;
 
+    @Autowired
     public RoleUseCase(IRoleMethods roleMethods, IRoleMapper roleMapper, IPermissionMethods permissionMethods) {
         this.roleMethods = roleMethods;
         this.roleMapper = roleMapper;

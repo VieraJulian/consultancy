@@ -10,6 +10,7 @@ import com.consultancy.users.domain.UserEntity;
 import com.consultancy.users.infrastructure.inputPort.IUserInputPort;
 import com.consultancy.users.infrastructure.outputPort.IRoleMethods;
 import com.consultancy.users.infrastructure.outputPort.IUserMethods;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,7 @@ public class UserUseCase implements IUserInputPort {
 
     private final IUserMapper userMapper;
 
+    @Autowired
     public UserUseCase(IUserMethods userMethods, IRoleMethods roleMethods, IUserMapper userMapper) {
         this.userMethods = userMethods;
         this.userMapper = userMapper;

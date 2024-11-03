@@ -7,6 +7,7 @@ import com.consultancy.users.application.mapper.IPermissionMapper;
 import com.consultancy.users.domain.Permission;
 import com.consultancy.users.infrastructure.inputPort.IPermissionInputPort;
 import com.consultancy.users.infrastructure.outputPort.IPermissionMethods;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class PermissionUseCase implements IPermissionInputPort {
     private final IPermissionMethods permissionMethods;
     private final IPermissionMapper permissionMapper;
 
+    @Autowired
     public PermissionUseCase(IPermissionMethods permissionMethods, IPermissionMapper permissionMapper) {
         this.permissionMethods = permissionMethods;
         this.permissionMapper = permissionMapper;
