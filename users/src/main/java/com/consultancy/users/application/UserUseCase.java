@@ -11,6 +11,8 @@ import com.consultancy.users.infrastructure.inputPort.IUserInputPort;
 import com.consultancy.users.infrastructure.outputPort.IRoleMethods;
 import com.consultancy.users.infrastructure.outputPort.IUserMethods;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,6 +37,7 @@ public class UserUseCase implements IUserInputPort {
 
         UserEntity userEntity = userMapper.userRequestDtoToUserEntity(userRequestDTO);
 
+        userEntity.setPassword(encryptPassword(userEntity.getPassword()));
         userEntity.setEnabled(true);
         userEntity.setAccountNotExpired(true);
         userEntity.setAccountNotLocked(true);
@@ -52,7 +55,7 @@ public class UserUseCase implements IUserInputPort {
         Role role = roleMethods.findById(userRequestDTO.getRole().getId());
 
         userEntity.setName(userRequestDTO.getName());
-        userEntity.setPassword(userRequestDTO.getPassword());
+        userEntity.setPassword(encryptPassword(userRequestDTO.getPassword()));
         userEntity.setEmail(userRequestDTO.getEmail());
         userEntity.setRole(role);
 
@@ -82,5 +85,9 @@ public class UserUseCase implements IUserInputPort {
         userMethods.deleteById(id);
 
         return "User deleted successfully";
+    }
+
+    public String encryptPassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
     }
 }
