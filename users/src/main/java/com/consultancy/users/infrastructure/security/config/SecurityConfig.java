@@ -40,6 +40,7 @@ public class SecurityConfig {
                     authorize.requestMatchers("/permissions/**").hasRole("ADMIN");
                     authorize.requestMatchers("/roles/**").permitAll();
                     authorize.requestMatchers("/users/**").permitAll();
+                    authorize.requestMatchers("/auth/**").permitAll();
                 })
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class);
