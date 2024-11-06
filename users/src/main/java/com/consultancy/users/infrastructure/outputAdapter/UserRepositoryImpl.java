@@ -3,6 +3,7 @@ package com.consultancy.users.infrastructure.outputAdapter;
 import com.consultancy.users.application.exception.UserNotFoundException;
 import com.consultancy.users.domain.UserEntity;
 import com.consultancy.users.infrastructure.outputPort.IUserMethods;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,6 +28,11 @@ public class UserRepositoryImpl implements IUserMethods {
     @Override
     public UserEntity findByEmail(String email) throws UserNotFoundException {
         return userRepository.findUserEntityByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    @Override
+    public UserEntity findByUsername(String username) {
+        return userRepository.findUserEntityByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override

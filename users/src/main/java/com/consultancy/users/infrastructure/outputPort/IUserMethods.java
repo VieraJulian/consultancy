@@ -10,5 +10,6 @@ public interface IUserMethods {
     public UserEntity save(UserEntity userEntity);
     public UserEntity findById(Long id) throws UserNotFoundException;
     public UserEntity findByEmail(String email) throws UserNotFoundException;
+    public UserEntity findByUsername(String username);
     public void deleteById(Long id);
 }
