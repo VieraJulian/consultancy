@@ -2,9 +2,12 @@ package com.consultancy.users.application;
 
 import com.consultancy.users.application.dto.AuthLoginDTO;
 import com.consultancy.users.application.dto.AuthResponseDTO;
-import com.consultancy.users.application.exception.UserNotFoundException;
+import com.consultancy.users.application.dto.SignUpDTO;
+import com.consultancy.users.application.exception.RoleNotFoundException;
 import com.consultancy.users.application.utils.JwtUtils;
+import com.consultancy.users.domain.Role;
 import com.consultancy.users.domain.UserEntity;
+import com.consultancy.users.infrastructure.outputPort.IRoleMethods;
 import com.consultancy.users.infrastructure.outputPort.IUserMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,26 +31,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final IUserMethods userMethods;
 
+    private final IRoleMethods roleMethods;
+
     private final PasswordEncoder passwordEncoder;
 
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public UserDetailsServiceImpl(IUserMethods userMethods, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+    public UserDetailsServiceImpl(IUserMethods userMethods, IRoleMethods roleMethods, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.userMethods = userMethods;
+        this.roleMethods = roleMethods;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user;
-
-        try {
-            user = userMethods.findByEmail(email);
-        } catch (UserNotFoundException e) {
-            throw new UsernameNotFoundException("User not found with email: " + email, e);
-        }
+        UserEntity user = userMethods.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
@@ -91,6 +91,50 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         return new UsernamePasswordAuthenticationToken(email, userDetails.getPassword(), userDetails.getAuthorities());
+    }
+
+    public String register(SignUpDTO signUpDTO) throws RoleNotFoundException {
+
+        String username = signUpDTO.name();
+        String email = signUpDTO.email();
+
+        if (userMethods.findByUsername(username).isPresent()) {
+            return null;
+        };
+
+        if (userMethods.findByEmail(email).isPresent()) {
+            return null;
+        };
+
+        String password = passwordEncoder.encode(signUpDTO.password());
+
+        Role role;
+
+        if (email.contains("@admin.com")) {
+            role = roleMethods.findById(1L);
+        } else {
+            role = roleMethods.findById(2L);
+        }
+
+        if (role == null) {
+            return null;
+        }
+
+        UserEntity user = new UserEntity();
+
+        user.setName(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setEnabled(true);
+        user.setAccountNotExpired(true);
+        user.setAccountNotLocked(true);
+        user.setCredentialNotExpired(true);
+        user.setRole(role);
+
+        userMethods.save(user);
+
+        return "User registration successfully.";
+
     }
 
 }

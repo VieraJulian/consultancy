@@ -1,10 +1,10 @@
 package com.consultancy.users.infrastructure.outputAdapter;
 
-import com.consultancy.users.application.exception.UserNotFoundException;
 import com.consultancy.users.domain.UserEntity;
 import com.consultancy.users.infrastructure.outputPort.IUserMethods;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class UserRepositoryImpl implements IUserMethods {
@@ -21,18 +21,18 @@ public class UserRepositoryImpl implements IUserMethods {
     }
 
     @Override
-    public UserEntity findById(Long id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+    public Optional<UserEntity> findById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public UserEntity findByEmail(String email) throws UserNotFoundException {
-        return userRepository.findUserEntityByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+    public Optional<UserEntity> findByEmail(String email) {
+        return userRepository.findUserEntityByEmail(email);
     }
 
     @Override
-    public UserEntity findByUsername(String username) {
-        return userRepository.findUserEntityByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public Optional<UserEntity> findByUsername(String username) {
+        return userRepository.findUserEntityByUsername(username);
     }
 
     @Override

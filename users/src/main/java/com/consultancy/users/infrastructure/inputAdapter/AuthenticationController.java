@@ -3,6 +3,7 @@ package com.consultancy.users.infrastructure.inputAdapter;
 import com.consultancy.users.application.UserDetailsServiceImpl;
 import com.consultancy.users.application.dto.AuthLoginDTO;
 import com.consultancy.users.application.dto.AuthResponseDTO;
+import com.consultancy.users.application.dto.SignUpDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,18 @@ public class AuthenticationController {
             return new ResponseEntity<>(authResponseDTO, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error login {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/signup")
+
+    public ResponseEntity<String> signUp(@RequestBody SignUpDTO signUpDTO) {
+        try {
+            String msj = userDetailsService.register(signUpDTO);
+            return new ResponseEntity<>(msj, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error sign up {}", String.valueOf(e));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

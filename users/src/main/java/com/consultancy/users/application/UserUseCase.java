@@ -11,8 +11,8 @@ import com.consultancy.users.infrastructure.inputPort.IUserInputPort;
 import com.consultancy.users.infrastructure.outputPort.IRoleMethods;
 import com.consultancy.users.infrastructure.outputPort.IUserMethods;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,7 +51,7 @@ public class UserUseCase implements IUserInputPort {
 
     @Override
     public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) throws UserNotFoundException, RoleNotFoundException {
-        UserEntity userEntity = userMethods.findById(id);
+        UserEntity userEntity = userMethods.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
         Role role = roleMethods.findById(userRequestDTO.getRole().getId());
 
         userEntity.setName(userRequestDTO.getName());
@@ -67,14 +67,14 @@ public class UserUseCase implements IUserInputPort {
 
     @Override
     public UserResponseDTO findUserById(Long id) throws UserNotFoundException {
-        UserEntity userEntity = userMethods.findById(id);
+        UserEntity userEntity = userMethods.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
 
         return userMapper.userEntityToUserResponseDto(userEntity);
     }
 
     @Override
     public UserResponseDTO findUserByEmail(String email) throws UserNotFoundException {
-        UserEntity userEntity = userMethods.findByEmail(email);
+        UserEntity userEntity = userMethods.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
 
         return userMapper.userEntityToUserResponseDto(userEntity);
     }
