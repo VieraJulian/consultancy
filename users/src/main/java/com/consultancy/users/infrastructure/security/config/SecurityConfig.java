@@ -38,11 +38,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/permissions/**").hasRole("ADMIN");
-                    authorize.requestMatchers("/roles/**").permitAll();
+                    authorize.requestMatchers("/roles/**").hasRole("ADMIN");
                     authorize.requestMatchers("/users/**").permitAll();
                     authorize.requestMatchers("/auth/**").permitAll();
                 })
-                .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class);
         return http.build();
     }

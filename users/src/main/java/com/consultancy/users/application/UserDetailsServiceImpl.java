@@ -98,13 +98,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String username = signUpDTO.name();
         String email = signUpDTO.email();
 
-        if (userMethods.findByUsername(username).isPresent()) {
-            return null;
-        };
+        userMethods.findByUsername(username);
 
-        if (userMethods.findByEmail(email).isPresent()) {
-            return null;
-        };
+        userMethods.findByEmail(email);
 
         String password = passwordEncoder.encode(signUpDTO.password());
 
