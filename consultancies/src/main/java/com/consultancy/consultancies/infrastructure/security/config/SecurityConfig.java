@@ -5,6 +5,7 @@ import com.consultancy.consultancies.infrastructure.security.filter.JwtTokenVali
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,7 +30,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/professionals/**").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.POST, "/professionals/create").authenticated();
+                    authorize.requestMatchers(HttpMethod.PUT, "/professionals/update/**").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/professionals/all/**").authenticated();
+                    authorize.requestMatchers(HttpMethod.DELETE, "/professionals/delete/**").hasRole("ADMIN");
+
+                    authorize.requestMatchers(HttpMethod.POST, "/availability/add/{professionalId}").authenticated();
+                    authorize.requestMatchers(HttpMethod.PUT, "/availability/update/{id}").authenticated();
+                    authorize.requestMatchers(HttpMethod.DELETE, "/availability/delete/{id}").hasRole("ADMIN");
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class);
 

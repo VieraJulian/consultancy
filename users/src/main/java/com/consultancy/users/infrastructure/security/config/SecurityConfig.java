@@ -5,6 +5,7 @@ import com.consultancy.users.infrastructure.security.filter.JwtTokenValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -37,9 +38,23 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/permissions/**").hasRole("ADMIN");
-                    authorize.requestMatchers("/roles/**").hasRole("ADMIN");
-                    authorize.requestMatchers("/users/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.GET, "/users/{id}").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/users/create").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.PUT, "/users/update/{id}").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/users").authenticated();
+                    authorize.requestMatchers(HttpMethod.DELETE, "/users/delete/{id}").hasRole("ADMIN");
+
+                    authorize.requestMatchers(HttpMethod.POST, "/roles/create").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.PUT, "/roles/update/{id}").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.GET, "/roles/all").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/roles/{id}").authenticated();
+                    authorize.requestMatchers(HttpMethod.DELETE, "/roles/delete/{id}").hasRole("ADMIN");
+
+                    authorize.requestMatchers(HttpMethod.POST, "/permissions/create").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.GET, "/permissions/{id}").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/permissions/all").authenticated();
+                    authorize.requestMatchers(HttpMethod.DELETE, "/permissions/delete/{id}").hasRole("ADMIN");
+
                     authorize.requestMatchers("/auth/**").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class);
