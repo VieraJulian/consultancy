@@ -1,4 +1,4 @@
-package com.consultancy.consultancies.infrastructure.inputportadapter;
+package com.consultancy.consultancies.infrastructure.inputAdapter;
 
 import com.consultancy.consultancies.application.dto.AvailabilityDto;
 import com.consultancy.consultancies.application.dto.ProfessionalDto;

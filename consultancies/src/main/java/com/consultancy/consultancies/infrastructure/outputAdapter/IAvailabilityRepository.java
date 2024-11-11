@@ -1,4 +1,4 @@
-package com.consultancy.consultancies.infrastructure.outputadapter;
+package com.consultancy.consultancies.infrastructure.outputAdapter;
 
 import com.consultancy.consultancies.domain.Availability;
 import org.springframework.data.jpa.repository.JpaRepository;
