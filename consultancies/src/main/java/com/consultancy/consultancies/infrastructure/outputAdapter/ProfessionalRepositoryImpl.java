@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProfessionalRepositoryImpl implements IProfessionalMethods {
@@ -26,8 +27,8 @@ public class ProfessionalRepositoryImpl implements IProfessionalMethods {
     }
 
     @Override
-    public Professional getProfessionalById(Long id) throws ProfessionalNotFoundException {
-        return professionalRepository.findById(id).orElseThrow(() -> new ProfessionalNotFoundException("Professional not found"));
+    public Optional<Professional> getProfessionalById(Long id) {
+        return professionalRepository.findById(id);
     }
 
     @Override

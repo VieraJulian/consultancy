@@ -4,7 +4,9 @@ import com.consultancy.reservations.application.mapper.IReservationMapper;
 import com.consultancy.reservations.domain.dto.ReservationRequestDTO;
 import com.consultancy.reservations.domain.dto.ReservationResponseDTO;
 import com.consultancy.reservations.infrastructure.inputport.IReservationInputPort;
+import com.consultancy.reservations.infrastructure.outputport.IProfessionalServicePort;
 import com.consultancy.reservations.infrastructure.outputport.IReservationMethods;
+import com.consultancy.reservations.infrastructure.outputport.IUserServicePort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +18,15 @@ public class ReservationUseCase implements IReservationInputPort {
 
     private final IReservationMapper reservationMapper;
 
-    public ReservationUseCase(IReservationMethods reservationMethods, IReservationMapper reservationMapper) {
+    private final IProfessionalServicePort professionalServicePort;
+
+    private final IUserServicePort userServicePort;
+
+    public ReservationUseCase(IReservationMethods reservationMethods, IReservationMapper reservationMapper, IProfessionalServicePort professionalServicePort, IUserServicePort userServicePort) {
         this.reservationMethods = reservationMethods;
         this.reservationMapper = reservationMapper;
+        this.professionalServicePort = professionalServicePort;
+        this.userServicePort = userServicePort;
     }
 
     @Override

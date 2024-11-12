@@ -37,7 +37,7 @@ public class ProfessionalUseCase implements IProfessionalInputPort {
 
     @Override
     public ProfessionalDto updateProfessional(Long id, ProfessionalUpdateDto professionalUpdateDto) throws ProfessionalNotFoundException {
-        Professional professionalDB = professionalMethods.getProfessionalById(id);
+        Professional professionalDB = professionalMethods.getProfessionalById(id).orElseThrow(() -> new ProfessionalNotFoundException("Professional not found"));
 
         professionalDB.setName(professionalUpdateDto.getName());
         professionalDB.setSpecialty(professionalUpdateDto.getSpecialty());
@@ -47,6 +47,13 @@ public class ProfessionalUseCase implements IProfessionalInputPort {
         Professional professionalUpdated = professionalMethods.saveProfessional(professionalDB);
 
         return professionalMapper.professionalToProfessionalDto(professionalUpdated);
+    }
+
+    @Override
+    public ProfessionalDto findProfessionalById(Long id) throws ProfessionalNotFoundException {
+        Professional professionalDB = professionalMethods.getProfessionalById(id).orElseThrow(() -> new ProfessionalNotFoundException("Professional not found"));
+
+        return professionalMapper.professionalToProfessionalDto(professionalDB);
     }
 
     @Override

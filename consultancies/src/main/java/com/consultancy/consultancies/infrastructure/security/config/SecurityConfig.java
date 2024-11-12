@@ -33,6 +33,7 @@ public class SecurityConfig {
                     authorize.requestMatchers(HttpMethod.POST, "/professionals/create").authenticated();
                     authorize.requestMatchers(HttpMethod.PUT, "/professionals/update/**").authenticated();
                     authorize.requestMatchers(HttpMethod.GET, "/professionals/all/**").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/professionals/{id}").authenticated();
                     authorize.requestMatchers(HttpMethod.DELETE, "/professionals/delete/**").hasRole("ADMIN");
 
                     authorize.requestMatchers(HttpMethod.POST, "/availability/add/{professionalId}").authenticated();

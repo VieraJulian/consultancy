@@ -37,7 +37,7 @@ public class AvailabilityUseCase implements IAvailabilityInputPort {
 
     @Override
     public ProfessionalDto addAvailability(Long professionalId, AvailabilityDto availability) throws ProfessionalNotFoundException {
-        Professional professionalDB = professionalMethods.getProfessionalById(professionalId);
+        Professional professionalDB = professionalMethods.getProfessionalById(professionalId).orElseThrow(() -> new ProfessionalNotFoundException("Professional not found"));
         Availability availabilityConverted = availabilityMapper.availabilityDtoToAvailability(availability);
 
         professionalDB.getAvailabilities().add(availabilityConverted);

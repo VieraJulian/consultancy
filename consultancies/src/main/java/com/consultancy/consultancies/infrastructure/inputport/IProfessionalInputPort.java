@@ -13,6 +13,8 @@ public interface IProfessionalInputPort {
 
     ProfessionalDto updateProfessional(Long id, ProfessionalUpdateDto professionalUpdateDto) throws ProfessionalNotFoundException;
 
+    ProfessionalDto findProfessionalById(Long id) throws ProfessionalNotFoundException;
+
     List<ProfessionalDto> findAllProfessionals(int page, int size);
 
     String deleteProfessionalById(Long id) throws ProfessionalNotFoundException;

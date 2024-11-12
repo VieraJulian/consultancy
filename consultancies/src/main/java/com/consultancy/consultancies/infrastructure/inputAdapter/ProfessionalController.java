@@ -26,6 +26,18 @@ public class ProfessionalController {
         this.professionalUseCase = professionalUseCase;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfessionalDto> findProfessionalById(@PathVariable Long id){
+        try {
+            ProfessionalDto professional = professionalUseCase.findProfessionalById(id);
+            return new ResponseEntity<>(professional, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error getting professional {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @PostMapping("/create")
     public ResponseEntity<ProfessionalDto> createProfessional(@RequestBody ProfessionalCreateDto professionalCreateDto){
         try {
