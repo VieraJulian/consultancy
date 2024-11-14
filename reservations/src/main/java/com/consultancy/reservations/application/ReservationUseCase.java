@@ -1,5 +1,6 @@
 package com.consultancy.reservations.application;
 
+import com.consultancy.reservations.application.exception.InvalidStateException;
 import com.consultancy.reservations.application.exception.ReservationNotFoundException;
 import com.consultancy.reservations.application.exception.UserNotFoundException;
 import com.consultancy.reservations.application.mapper.IReservationMapper;
@@ -52,11 +53,27 @@ public class ReservationUseCase implements IReservationInputPort {
     }
 
     @Override
+    public String updateReservationStatus(Long id, String status) throws ReservationNotFoundException, InvalidStateException {
+        ReservationState newState;
+
+        try {
+            newState = ReservationState.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidStateException("Invalid reservation state: " + status);
+        }
+
+        Reservation reservationDB = reservationMethods.findById(id).orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+        reservationDB.setState(newState);
+        reservationMethods.save(reservationDB);
+
+        return "Reservation updated successfully";
+    }
+
+    @Override
     public String deleteReservationById(Long id) throws ReservationNotFoundException {
         Reservation reservation = reservationMethods.findById(id).orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
         reservationMethods.deleteById(reservation.getId());
 
         return "Reservation deleted successfully";
-
     }
 }

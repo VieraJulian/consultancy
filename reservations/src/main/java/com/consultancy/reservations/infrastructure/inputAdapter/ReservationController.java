@@ -35,6 +35,17 @@ public class ReservationController {
         }
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<String> updateReservationStatus(@PathVariable Long id, @RequestParam String status) {
+        try {
+            String msj = reservationUseCase.updateReservationStatus(id, status);
+            return new ResponseEntity<>(msj, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error updating reservation {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteReservation(@PathVariable Long id) {
         try {
