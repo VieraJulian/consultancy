@@ -2,6 +2,8 @@ package com.consultancy.reservations.application;
 
 import com.consultancy.reservations.application.exception.UserNotFoundException;
 import com.consultancy.reservations.application.mapper.IReservationMapper;
+import com.consultancy.reservations.domain.Reservation;
+import com.consultancy.reservations.domain.ReservationState;
 import com.consultancy.reservations.domain.dto.ProfessionalDTO;
 import com.consultancy.reservations.domain.dto.ReservationRequestDTO;
 import com.consultancy.reservations.domain.dto.ReservationResponseDTO;
@@ -35,8 +37,18 @@ public class ReservationUseCase implements IReservationInputPort {
     @Override
     public ReservationResponseDTO createReservation(ReservationRequestDTO reservationRequestDTO, String token) throws UserNotFoundException {
         UserDTO user = userServicePort.getUser(reservationRequestDTO.getUserId(), token);
-        
-        return null;
+        ProfessionalDTO professional = professionalServicePort.getProfessional(reservationRequestDTO.getProfessionalId(), token);
+
+        Reservation reservation = reservationMapper.reservationRequestDtoTOReservation(reservationRequestDTO);
+        reservation.setState(ReservationState.PENDING);
+
+        Reservation reservationNew = reservationMethods.save(reservation);
+
+        ReservationResponseDTO response = reservationMapper.reservationToResponseDTO(reservationNew);
+        response.setUser(user);
+        response.setProfessional(professional);
+
+        return response;
     }
 
     @Override

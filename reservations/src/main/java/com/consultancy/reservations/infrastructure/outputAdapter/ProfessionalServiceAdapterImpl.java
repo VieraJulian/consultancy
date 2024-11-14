@@ -16,7 +16,7 @@ public class ProfessionalServiceAdapterImpl implements IProfessionalServicePort 
     }
 
     @Override
-    public ProfessionalDTO getProfessional(Long professionalId) {
-        return professionalAdapter.getProfessional(professionalId);
+    public ProfessionalDTO getProfessional(Long professionalId, String token) {
+        return professionalAdapter.getProfessional(professionalId, token);
     }
 }

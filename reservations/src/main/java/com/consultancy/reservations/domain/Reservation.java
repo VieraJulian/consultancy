@@ -24,5 +24,7 @@ public class Reservation {
     private Long professionalId;
     private LocalDate reservationDate;
     private LocalTime reservationTime;
+
+    @Enumerated(EnumType.STRING)
     private ReservationState state;
 }

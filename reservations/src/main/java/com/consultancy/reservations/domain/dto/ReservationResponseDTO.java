@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,9 +13,9 @@ import java.time.LocalTime;
 public class ReservationResponseDTO {
 
     private Long id;
-    private LocalDate reservationDate;
-    private LocalTime reservationTime;
-    private ReservationState state;
+    private String reservationDate;
+    private String reservationTime;
+    private String state;
     private UserDTO user;
     private ProfessionalDTO professional;
 }
