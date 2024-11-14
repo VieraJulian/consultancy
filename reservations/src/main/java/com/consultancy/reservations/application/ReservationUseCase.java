@@ -1,5 +1,6 @@
 package com.consultancy.reservations.application;
 
+import com.consultancy.reservations.application.exception.ReservationNotFoundException;
 import com.consultancy.reservations.application.exception.UserNotFoundException;
 import com.consultancy.reservations.application.mapper.IReservationMapper;
 import com.consultancy.reservations.domain.Reservation;
@@ -14,7 +15,6 @@ import com.consultancy.reservations.infrastructure.outputport.IReservationMethod
 import com.consultancy.reservations.infrastructure.outputport.IUserServicePort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class ReservationUseCase implements IReservationInputPort {
@@ -52,17 +52,11 @@ public class ReservationUseCase implements IReservationInputPort {
     }
 
     @Override
-    public List<ReservationResponseDTO> findReservationsByUserId(Long id) {
-        return List.of();
-    }
+    public String deleteReservationById(Long id) throws ReservationNotFoundException {
+        Reservation reservation = reservationMethods.findById(id).orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+        reservationMethods.deleteById(reservation.getId());
 
-    @Override
-    public List<ReservationResponseDTO> findReservationsByProfessionalId(Long id) {
-        return List.of();
-    }
+        return "Reservation deleted successfully";
 
-    @Override
-    public String deleteReservationById(Long id) {
-        return "";
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ReservationRepositoryImpl implements IReservationMethods {
@@ -23,13 +24,8 @@ public class ReservationRepositoryImpl implements IReservationMethods {
     }
 
     @Override
-    public List<Reservation> findByUserId(Long userId) {
-        return reservationRepository.findReservationsByUserId(userId);
-    }
-
-    @Override
-    public List<Reservation> findByProfessionalId(Long professionalId) {
-        return reservationRepository.findReservationsByProfessionalId(professionalId);
+    public Optional<Reservation> findById(Long id) {
+        return reservationRepository.findById(id);
     }
 
     @Override

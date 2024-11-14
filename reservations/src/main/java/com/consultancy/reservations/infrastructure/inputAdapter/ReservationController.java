@@ -28,9 +28,20 @@ public class ReservationController {
     public ResponseEntity<ReservationResponseDTO> createReservation(@RequestHeader("Authorization") String token, @RequestBody ReservationRequestDTO reservationRequestDTO) {
         try {
             ReservationResponseDTO reservationNew = reservationUseCase.createReservation(reservationRequestDTO, token);
-            return new ResponseEntity<>(reservationNew, HttpStatus.OK);
+            return new ResponseEntity<>(reservationNew, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Error creating reservation {}", String.valueOf(e));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteReservation(@PathVariable Long id) {
+        try {
+            String msj = reservationUseCase.deleteReservationById(id);
+            return new ResponseEntity<>(msj, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error deleting reservation {}", String.valueOf(e));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
