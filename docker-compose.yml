@@ -1,0 +1,97 @@
+services:
+  eureka-server:
+    container_name: eureka-service
+    image: eureka
+    build: eureka/
+    restart: always
+    ports:
+      - '8761:8761'
+    networks:
+      - 'dockerNetwork'
+
+  config-server:
+    container_name: config-server
+    image: config-server
+    build: config-server/
+    restart: always
+    ports:
+      - '8888:8888'
+    networks:
+      - 'dockerNetwork'
+    depends_on:
+      - eureka-server
+
+  api-gateway:
+    container_name: api-gateway
+    image: api-gateway
+    build: gateway/
+    restart: always
+    ports:
+      - '443:443'
+    networks:
+      - 'dockerNetwork'
+    depends_on:
+      - eureka-server
+      - config-server
+
+  mysql-db:
+    container_name: mysql-db
+    image: mysql:8.2.0
+    restart: always
+    ports:
+      - '3306:3306'
+    networks:
+      - 'dockerNetwork'
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=usersDb,professionalsDb,reservationsDb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  users-service:
+    container_name: users-service
+    image: users
+    build: users/
+    restart: always
+    ports:
+      - '9001:9001'
+    networks:
+      - 'dockerNetwork'
+    depends_on:
+      - eureka-server
+      - config-server
+      - mysql-db
+
+  professionals-service:
+    container_name: professionals-service
+    image: professionals
+    build: consultancies/
+    restart: always
+    ports:
+      - '9000:9000'
+    networks:
+      - 'dockerNetwork'
+    depends_on:
+      - eureka-server
+      - config-server
+      - mysql-db
+
+  reservations-service:
+    container_name: reservations-service
+    image: reservations
+    build: reservations/
+    restart: always
+    ports:
+      - '9002:9002'
+    networks:
+      - 'dockerNetwork'
+    depends_on:
+      - eureka-server
+      - config-server
+      - mysql-db
+
+networks:
+  dockerNetwork:
+
+volumes:
+  mysql-db:
