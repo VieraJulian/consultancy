@@ -1,10 +1,7 @@
 package com.consultancy.users.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
@@ -13,6 +10,7 @@ import org.hibernate.annotations.SQLDelete;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@Builder
 @SQLDelete(sql = "UPDATE users SET enabled = false WHERE id = ?")
 public class UserEntity {
 

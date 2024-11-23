@@ -11,7 +11,6 @@ import com.consultancy.users.infrastructure.inputPort.IUserInputPort;
 import com.consultancy.users.infrastructure.outputPort.IRoleMethods;
 import com.consultancy.users.infrastructure.outputPort.IUserMethods;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
