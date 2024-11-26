@@ -87,6 +87,7 @@ public class UserUseCase implements IUserInputPort {
     }
 
     public String encryptPassword(String password) {
+
         return new BCryptPasswordEncoder().encode(password);
     }
 }
